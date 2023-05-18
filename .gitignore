@@ -1,7 +1,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
-*$py.class
+.DS_Store
+*.egg-info/
+.venv
 
 # C extensions
 *.so
