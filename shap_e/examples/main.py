@@ -30,9 +30,6 @@ image = load_image("test1.png")
 output_folder = "plys"  # 원하는 폴더 이름으로 변경
 os.makedirs(output_folder, exist_ok=True)  # 폴더가 없으면 생성
 
-output_folder = "plys"  # 원하는 폴더 이름으로 변경
-os.makedirs(output_folder, exist_ok=True)  # 폴더가 없으면 생성
-
 guidance_scale = 3.3
 
 latents = sample_latents(
@@ -52,7 +49,16 @@ latents = sample_latents(
     )
 
 mesh = decode_latent_mesh(xm, latents).tri_mesh()
+
+# Get the vertex colors
+red_channel = mesh.vertex_channels['R']
+green_channel = mesh.vertex_channels['G']
+blue_channel = mesh.vertex_channels['B']
+
 mesh = trimesh.Trimesh(vertices=mesh.verts, faces=mesh.faces)
+
+# Add the vertex colors to the PLY file
+mesh.visual.vertex_colors = np.column_stack((red_channel, green_channel, blue_channel))
 
 file_name = f'scale_{guidance_scale}.ply'
 file_path = os.path.join(output_folder, file_name)
